@@ -21,6 +21,9 @@ def backup_game_config():
     center_y = int(window.winfo_screenheight() / 2 - 200)
     window.geometry(f'600x400+{center_x}+{center_y}')
 
+    # Set the icon
+    window.iconbitmap('C:\\Users\\kiero\\Desktop\\Game Dev\\SensStay\\assets\\SensStay.ico')
+
     # create a label for the backup frame
     back_frame_label = tk.Label(window, text="Game Backup")
     
