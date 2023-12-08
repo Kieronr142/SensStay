@@ -3,20 +3,14 @@ import shutil
 import tkinter as tk
 from tkinter import filedialog
 
-def backup_game_config():
-        
-    ### Creates the tkinter window and frames ###
-
-
-
+def setup_tkinter_window():
     # Create a new Tkinter window
     window = tk.Tk()
-    
+
     # Name the window
     window.title('SensStay')
 
     # Set the window size and position
-    # find the center point
     center_x = int(window.winfo_screenwidth() / 2 - 300)
     center_y = int(window.winfo_screenheight() / 2 - 200)
     window.geometry(f'600x400+{center_x}+{center_y}')
@@ -24,21 +18,24 @@ def backup_game_config():
     # Set the icon
     window.iconbitmap('.\\assets\SensStay.ico')
 
-    # create a label for the backup frame
-    back_frame_label = tk.Label(window, text="Game Backup")
-    
-    # pack the label
-    back_frame_label.pack()
+    return window
+
+def backup_game_config(window):
 
     # create a frame for the config backup
     back_frame = tk.Frame(window, bd=1, relief='solid')
 
     # pack the frame into the window
-    back_frame.pack(ipadx= 10, ipady = 10)
+    back_frame.pack(padx=10, pady=10, ipadx= 10, ipady = 10, side=tk.LEFT)
 
-
+    # create a label for the backup frame
+    back_frame_label = tk.Label(back_frame, text="Game Backup", font=(25))
+    
+    # pack the label
+    back_frame_label.pack()
 
     ### CONFIG FILE SELECTION ###
+
 
 
     # Create a button that lets the user select the config file
@@ -160,9 +157,40 @@ def backup_game_config():
                                bg='#f0f0f0',
                                state='disabled')
     backup_path_text.pack()
+    return
 
-    # Start the Tkinter event loop
+def installed_games(window):
+    # lists all of the games with configurations saved
+    
+    # create a new frame that lines up horizontally with the existing frame
+    new_frame = tk.Frame(window, bd=1, relief='solid')
+
+    # pack the new frame into the window
+    new_frame.pack(padx=10, pady=10, ipadx=10, ipady=10, side=tk.RIGHT)
+
+    # Get a list of all folder names in the 'configs/' directory
+    folder_names = next(os.walk('configs/'))[1]
+
+    # Add a label to new_frame for each folder name
+    for folder in folder_names:
+        label = tk.Label(new_frame, text=folder)
+        label.pack()
+
+    return
+
+def main():
+    # Call the Tkinter window setup function
+    window = setup_tkinter_window()
+
+    # Call the backup frame
+    backup_game_config(window)
+
+    # Call the games list
+    installed_games(window)
+
+    # TO DO ADD MORE FUNCTIONS
+
     window.mainloop()
 
 # Call the function
-backup_game_config()
+main()
