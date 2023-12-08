@@ -32,12 +32,26 @@ def backup_game_config():
     def select_config_file():
         config_path = filedialog.askopenfilename()
         config_path_var.set(config_path)
+        
+        # Stops the directory from displaying too much
+        if len(config_path) <= 40:
+            config_path_label.config(text=config_path)  
+        else:
+            config_path_label.config(text=config_path[0:40]+"...")  
 
     config_path_var = tk.StringVar()
     config_path_button = tk.Button(back_frame, 
                                    text="Select Config File", 
                                    command=select_config_file)
     config_path_button.pack(padx=10, pady=10)
+
+    # Create a label to display the selected configuration path
+    config_path_title_label = tk.Label(back_frame, text="Configuration Selected:")
+    config_path_title_label.pack()
+
+    # Create a label to display the selected configuration path
+    config_path_label = tk.Label(back_frame, text="No configuration selected")
+    config_path_label.pack()
 
     # Create a StringVar for the game's name
     game_name_var = tk.StringVar()
