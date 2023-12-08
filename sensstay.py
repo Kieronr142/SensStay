@@ -39,6 +39,8 @@ def backup_game_config():
         else:
             config_path_label.config(text=config_path[0:40]+"...")  
 
+        game_name_entry.config(state='normal')
+
     config_path_var = tk.StringVar()
     config_path_button = tk.Button(back_frame, 
                                    text="Select Config File", 
@@ -61,7 +63,9 @@ def backup_game_config():
     game_name_label.pack()
 
     # Create an entry field for the game's name
-    game_name_entry = tk.Entry(back_frame, textvariable=game_name_var)
+    game_name_entry = tk.Entry(back_frame, 
+                               textvariable=game_name_var, 
+                               state='disabled')
     game_name_entry.pack()
 
     # Create a button that backs up the config file when clicked
