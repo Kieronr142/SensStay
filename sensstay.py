@@ -39,6 +39,10 @@ def backup_game_config():
         else:
             config_path_label.config(text=config_path[0:40]+"...")  
 
+        # Resets the game name variable to clear the box
+        game_name_var.set('')
+
+        # Allows the user to type in the box
         game_name_entry.config(state='normal')
 
     config_path_var = tk.StringVar()
