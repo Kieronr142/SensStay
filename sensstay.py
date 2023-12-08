@@ -4,6 +4,11 @@ import tkinter as tk
 from tkinter import filedialog
 
 def backup_game_config():
+        
+    ### Creates the tkinter window and frames ###
+
+
+
     # Create a new Tkinter window
     window = tk.Tk()
     
@@ -28,22 +33,28 @@ def backup_game_config():
     # pack the frame into the window
     back_frame.pack(ipadx= 10, ipady = 10)
 
+
+
+    ### CONFIG FILE SELECTION ###
+
+
     # Create a button that lets the user select the config file
     def select_config_file():
         config_path = filedialog.askopenfilename()
         config_path_var.set(config_path)
         
-        # Stops the directory from displaying too much
-        if len(config_path) <= 40:
-            config_path_label.config(text=config_path)  
-        else:
-            config_path_label.config(text=config_path[0:40]+"...")  
-
-        # Resets the game name variable to clear the box
-        game_name_var.set('')
+        # Update the text box with the selected path
+        config_path_text.config(state='normal') # Enable box editing
+        config_path_text.delete('1.0', tk.END)  # Clear the text box
+        config_path_text.insert(tk.END, config_path)  # Insert the selected path
+        config_path_text.config(state='disabled') # Disable box editing
 
         # Allows the user to type in the box
         game_name_entry.config(state='normal')
+        game_name_entry.delete(0,'end')
+
+        # Resets the game name variable to clear the box
+        game_name_var.set('')
 
     config_path_var = tk.StringVar()
     config_path_button = tk.Button(back_frame, 
@@ -56,8 +67,27 @@ def backup_game_config():
     config_path_title_label.pack()
 
     # Create a label to display the selected configuration path
-    config_path_label = tk.Label(back_frame, text="No configuration selected")
-    config_path_label.pack()
+    # Limited to 30 characters long and wrap stops the output being displayed vertically
+    config_path_text = tk.Text(back_frame, 
+                               height=1, 
+                               width=30, 
+                               wrap="none", 
+                               state='disabled',
+                               bg='#f0f0f0')
+    config_path_text.pack()
+
+    # Create a horizontal scrollbar and attach it to the text box
+    x_scrollbar = tk.Scrollbar(back_frame,
+                               orient='horizontal',
+                               command=config_path_text.xview)
+    x_scrollbar.pack(fill='x')
+    config_path_text['xscrollcommand'] = x_scrollbar.set
+
+
+
+    ### Game Name Input ###
+
+
 
     # Create a StringVar for the game's name
     game_name_var = tk.StringVar()
@@ -68,9 +98,21 @@ def backup_game_config():
 
     # Create an entry field for the game's name
     game_name_entry = tk.Entry(back_frame, 
-                               textvariable=game_name_var, 
-                               state='disabled')
+                               textvariable=game_name_var,
+                               width=40)
     game_name_entry.pack()
+
+    # Insert the initial box text
+    game_name_entry.insert(0, 'Select the games config file first')
+
+    # Disable the game name field from modificaton
+    game_name_entry.config(state='disabled')
+
+
+
+    ### BACKUP THE GAME CONFIG FILE ###
+
+
 
     # Create a button that backs up the config file when clicked
     def backup_config():
