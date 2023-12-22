@@ -157,36 +157,49 @@ def backup_game_config(window):
                                bg='#f0f0f0',
                                state='disabled')
     backup_path_text.pack()
-    return
+    return back_frame
 
 def installed_games(window):
     # lists all of the games with configurations saved
     
     # create a new frame that lines up horizontally with the existing frame
-    new_frame = tk.Frame(window, bd=1, relief='solid')
+    install_frame = tk.Frame(window, bd=1, relief='solid')
 
     # pack the new frame into the window
-    new_frame.pack(padx=10, pady=10, ipadx=10, ipady=10, side=tk.RIGHT)
+    install_frame.pack(padx=10, pady=10, ipadx=10, ipady=10, side=tk.LEFT)
+
+    # create a label for the backup frame
+    install_frame_label = tk.Label(install_frame, text="Backed up games", font=(25))
+    
+    # pack the label
+    install_frame_label.pack()
 
     # Get a list of all folder names in the 'configs/' directory
     folder_names = next(os.walk('configs/'))[1]
 
-    # Add a label to new_frame for each folder name
+    # Add a label to install_frame for each folder name
     for folder in folder_names:
-        label = tk.Label(new_frame, text=folder)
+        label = tk.Label(install_frame, text=folder)
         label.pack()
 
-    return
+    return install_frame
+
+def resize_frames(event, frame1, frame2):
+    # Resize the second frame based on the size of the first frame
+    frame2.config(width=frame1.winfo_width(), height=frame1.winfo_height())
 
 def main():
     # Call the Tkinter window setup function
     window = setup_tkinter_window()
 
     # Call the backup frame
-    backup_game_config(window)
+    backup_frame = backup_game_config(window)
 
     # Call the games list
-    installed_games(window)
+    games_frame = installed_games(window)
+
+    # Bind the resize_frames function to the <Configure> event of both frames
+    window.bind('<Configure>', lambda e: resize_frames(e, backup_frame, games_frame))
 
     # TO DO ADD MORE FUNCTIONS
 
